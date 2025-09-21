@@ -1,20 +1,32 @@
-FROM python:3.11-slim
+FROM python:3.12.2-slim-bullseye
 
 WORKDIR /usr/src/nexus_movies_backend
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# RUN apt-get update && apt-get install -y \
-#     build-essential \
-#     libpq-dev \
-#     curl \
-#     && rm -rf /var/lib/apt/lists/*  
-# RUN curl -sSL https://install.python-poetry.org | python3 -
-# ENV PATH="/root/.local/bin:$PATH"
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y netcat-openbsd && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip
 COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy application code
 COPY . .
+
+# Convert Windows line endings and make entrypoint executable
+RUN if [ -f "/usr/src/nexus_movies_backend/entrypoint.sh" ]; then \
+        sed -i 's/\r$//g' /usr/src/nexus_movies_backend/entrypoint.sh && \
+        chmod +x /usr/src/nexus_movies_backend/entrypoint.sh; \
+    fi
+
+# Create and switch to non-root user
+RUN useradd -m appuser
+USER appuser
+
+ENTRYPOINT [ "/usr/src/nexus_movies_backend/entrypoint.sh" ]
