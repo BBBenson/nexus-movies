@@ -20,7 +20,10 @@ DEBUG = bool(os.environ.get('DEBUG', default=0))
 # ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(" ")
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split()
 
-AUTH_USER_MODEL = 'useraccount.User'
+# TMDB API Key
+TMDB_API_KEY = '65eb7efd954cca555c4f29cab5a0f2cf'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 SITE_ID = 1
 
@@ -79,7 +82,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
 
-    'useraccount',
+    'accounts',
     'movies',
 ]
 
@@ -166,6 +169,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
