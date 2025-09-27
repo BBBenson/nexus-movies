@@ -27,7 +27,10 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 SITE_ID = 1
 
-WEBSITE_URL = 'http://localhost:8000'
+if DEBUG:
+    WEBSITE_URL = 'http://localhost:8000'
+else:
+    WEBSITE_URL = 'http://143.110.152.152'
 
 SIMPLE_JWT = {"ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
               "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
@@ -56,7 +59,25 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://127.0.0.1:3000',
+    'http://143.110.152.152',
+    'http://143.110.152.152:1337'
 ]
+
+CORS_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:3000',
+    'http://143.110.152.152',
+    'http://143.110.152.152:1337'
+]
+
+CORS_ORIGINS_WHITELIST = [
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:3000',
+    'http://143.110.152.152',
+    'http://143.110.152.152:1337'
+]
+# Or allow all origins for development (not recommended for production)
+# CORS_ALLOW_ALL_ORIGINS = True  # Only for development!
 
 REST_AUTH = {
     "USE_JWT": True,
@@ -73,6 +94,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
 
     'corsheaders',
     'rest_framework',
@@ -115,6 +137,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'nexus_movies_backend.wsgi.application'
+ASGI_APPLICATION = 'nexus_movies_backend.asgi.application'
 
 
 # Database

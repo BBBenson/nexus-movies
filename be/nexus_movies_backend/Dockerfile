@@ -11,6 +11,16 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+
+# Install system dependencies including graphviz and build tools
+RUN apt-get update && apt-get install -y \
+    graphviz \
+    graphviz-dev \
+    gcc \
+    g++ \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip
 COPY ./requirements.txt .
